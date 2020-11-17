@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/CPW212/BankAccount" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW212/BranchingAndDataBasePractice" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW212/HelloWorldDemo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW212/NestedObjects" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW212/RatHutProductManager" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW213/CPW213-DebuggingMVC" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW213/FirstMVCSite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW213/FirstMVCWebsite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW213/badfolder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW213/eCommerceSite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW215/AdvancedWebsite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW215/ChuckNorrisJokes" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW215/MVCTesting/MVCTestingSample" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW215/PokeAPICore/PokeAPI" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW215/RatHutWebsite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/CPW215/UnitTestingExistingCode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/SpringQuarter/AddProductForm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/SpringQuarter/FormValidation" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/SpringQuarter/HelloSourceControll" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/SpringQuarter/PigDiceCode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/SpringQuarter/ToDoList" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TicTacToeApp" vcs="Git" />
+  </component>
+</project>
