@@ -25,7 +25,7 @@ public class MultiplayerActivity extends AppCompatActivity {
 
     // game turns
     private String currentTurn;
-    private TextView playerTurn;
+    public TextView playerTurn;
 
     // game buttons
     private Button TopLeftBtn;
@@ -70,9 +70,11 @@ public class MultiplayerActivity extends AppCompatActivity {
        // set up board - color the buttons and set the text
         setUpBoard(buttons);
 
-        // set the current player to player one to start
+        // assigning the currentTurn to playerOne
         currentTurn = playerOne;
 
+        playerTurn = findViewById(R.id.playerTurnTxt);
+        playerTurn.setText(playerOne);
     }
 
     public void onClick(View view) {
@@ -80,34 +82,51 @@ public class MultiplayerActivity extends AppCompatActivity {
         Button[] buttons = {TopLeftBtn,TopRightBtn,
                 BottomLeftBtn,BottomRightBtn};
 
+
         // when a button the player clicked
         Button clickedButton = buttonClicked(view, buttons);
 
         if ( clickedButton != null ){
+
             // if they clicked the right button...
             if  ( clickedButton.getText().equals("correct") ){
                 Toast.makeText(getApplicationContext(), "you clicked the right one",Toast.LENGTH_SHORT).show();
+                // get points to current player
+                UpdateScore();
             } else{
                 Toast.makeText(getApplicationContext(), "you clicked the wrong one",Toast.LENGTH_SHORT).show();
             }
             // check for winner
+            if ( WinDetected() ){
+                playerTurn.setText(currentTurn + " won!");
+            }
+            else {
+                // next turn
+                swapPlayers();
+                nextTurn(buttons);
+            }
 
-            // swap turns
+
         }
 
     }
 
-    private void UpdateScore(TextView text, int score){
-        score = score + 10;
-        text.setText(score);
+    // update the score of the current turn player
+    private void UpdateScore(){
+        if (currentTurn == playerOne){
+            playerOneScore = playerOneScore + 10;
+            playerOnePoints.setText(Integer.toString(playerOneScore));
+        }
+        else if (currentTurn == playerTwo){
+            playerTwoScore = playerTwoScore + 10;
+            playerTwoPoints.setText(Integer.toString(playerTwoScore));
+        }
     }
 
-    private void setUpBoard(Button[] buttons){
-        // assigning the playerTurn and setting the text
-        playerTurn = findViewById(R.id.playerTurnTxt);
-        currentTurn = playerOne; // player 1 has the first turn
-        playerTurn.setText(currentTurn);
 
+    // picks a random button to be correct &
+    // colors all the buttons
+    private void setUpBoard(Button[] buttons){
         // choose a random button to be "correct"
         generateRandomButton(buttons);
 
@@ -162,4 +181,39 @@ public class MultiplayerActivity extends AppCompatActivity {
         buttons[randomButton].setText("correct");
     }
 
+    // swap player turns
+    private void swapPlayers(){
+        if (currentTurn == playerOne){
+            currentTurn = playerTwo;
+        }
+        else if (currentTurn == playerTwo){
+            currentTurn = playerOne;
+        }
+
+        playerTurn.setText(currentTurn);
+    }
+
+    // set all buttons to same color / no text
+    private void clearBoard(Button[] buttons){
+        for (Button b : buttons){
+            b.setBackgroundColor(0);
+            b.setText("");
+        }
+    }
+
+    // set up the board & swap players
+    private void nextTurn(Button[] buttons){
+        clearBoard(buttons);
+        setUpBoard(buttons);
+    }
+
+    private boolean WinDetected(){
+        if (playerOneScore == 100 || playerTwoScore == 100){
+            playerTurn.setText(playerOne + "won!");
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
