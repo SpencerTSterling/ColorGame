@@ -1,6 +1,8 @@
 package com.example.colorgame;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class MultiplayerActivity extends AppCompatActivity {
+
+    // declaring x and y
+    float x1, x2, y1, y2;
 
     // players
     private final String playerOne = "Player 1";
@@ -121,6 +126,30 @@ public class MultiplayerActivity extends AppCompatActivity {
         playerTwoScore = 0;
         // reset the text views
         Multiplayer.resetText(playerTurn, playerOnePoints, playerTwoPoints);
+    }
+
+    // onTouch event: swipe left to open Main Activity
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        switch(touchEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                // swipe left
+                if (x1 < x2){
+                    openMainActivity();
+                }
+                break;
+        }
+        return false;
+    }
+
+    public void openMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }
