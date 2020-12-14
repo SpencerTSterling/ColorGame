@@ -89,14 +89,14 @@ public class Game {
     public static void generateButtonColor(Button[] buttons){
         Random random = new Random();
         int min = 0;
-        int max = 235;
+        int max = 225;
 
         int R = random.nextInt(max-min) + min;
         int G = random.nextInt(max-min) + min;
         int B = random.nextInt(max-min) + min;
 
         int color = Color.argb(255, R, G, B);
-        int correctColor = Color.argb(255, R + 50, G + 50, B + 50);
+        int correctColor = Color.argb(255, R + 30, G + 30, B + 30);
 
         for (Button b : buttons){
             // set all buttons to the same color
