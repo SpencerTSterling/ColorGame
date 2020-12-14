@@ -1,17 +1,13 @@
 package com.example.colorgame;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Random;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class MultiplayerActivity extends AppCompatActivity {
 
@@ -33,10 +29,6 @@ public class MultiplayerActivity extends AppCompatActivity {
     private Button BottomLeftBtn;
     private Button BottomRightBtn;
 
-    private Button NewGameBtn;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +40,7 @@ public class MultiplayerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // adding a home button to the tool bar
         ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) throw new AssertionError();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // assigning the game buttons
@@ -64,11 +57,8 @@ public class MultiplayerActivity extends AppCompatActivity {
         playerOnePoints = findViewById(R.id.playerOneTxt);
         playerTwoPoints = findViewById(R.id.playerTwoTxt);
 
-        // assigning the new game button
-        NewGameBtn = findViewById(R.id.newGameBtn);
-
        // set up board - color the buttons and set the text
-        setUpBoard(buttons);
+        Game.setUpBoard(buttons);
 
         // assigning the currentTurn to playerOne
         currentTurn = playerOne;
@@ -82,29 +72,30 @@ public class MultiplayerActivity extends AppCompatActivity {
         Button[] buttons = {TopLeftBtn,TopRightBtn,
                 BottomLeftBtn,BottomRightBtn};
 
-
         // when a button the player clicked
-        Button clickedButton = buttonClicked(view, buttons);
+        Button clickedButton = Game.buttonClicked(view, buttons);
 
         if ( clickedButton != null ){
-
-            // if they clicked the right button...
-            if  ( clickedButton.getText().equals("correct") ){
-               // Toast.makeText(getApplicationContext(), "you clicked the right one",Toast.LENGTH_SHORT).show();
+            // if the player clicks the correct button
+            if  ( Game.correctButton(clickedButton) ){
                 // get points to current player
-                UpdateScore();
-            } else{
-               // Toast.makeText(getApplicationContext(), "you clicked the wrong one",Toast.LENGTH_SHORT).show();
+                if (currentTurn.equals(playerOne)){
+                    playerOneScore = Game.updateScore(playerOneScore, playerOnePoints);
+                }
+                if (currentTurn.equals(playerTwo)){
+                    playerTwoScore = Game.updateScore(playerTwoScore, playerTwoPoints);
+                }
             }
+
             // check for winner
-            if ( WinDetected() ){
-                playerTurn.setText(currentTurn + " won!");
-                DisableButtons(buttons);
+            if ( Multiplayer.winDetected(playerOneScore, playerTwoScore) ){
+                playerTurn.setText(String.format("%s won!", currentTurn));
+                Game.disableButtons(buttons);
             }
             else {
-                // next turn
-                swapPlayers();
-                nextTurn(buttons);
+                // swap players and next turn
+                currentTurn = Multiplayer.swapPlayers(currentTurn, playerTurn);
+                Game.nextTurn(buttons);
             }
 
         }
@@ -115,149 +106,21 @@ public class MultiplayerActivity extends AppCompatActivity {
         // game buttons
         Button[] buttons = {TopLeftBtn,TopRightBtn,
                 BottomLeftBtn,BottomRightBtn};
-
         // enable the buttons
-        EnableButtons(buttons);
+        Game.enableButtons(buttons);
         // clear the board
-        clearBoard(buttons);
+        Game.clearBoard(buttons);
         // set up the board
-        setUpBoard(buttons);
-
-
+        Game.setUpBoard(buttons);
         // set current turn back to playerOne
-        if(currentTurn == playerTwo){
-            swapPlayers();
+        if(currentTurn.equals(playerTwo)){
+            Multiplayer.swapPlayers(currentTurn, playerTurn);
         }
-
-        // reset the text views
-        ResetText();
-    }
-
-    private void ResetText(){
-        playerTurn.setText(currentTurn);
+        // reset scores
         playerOneScore = 0;
         playerTwoScore = 0;
-        playerOnePoints.setText(Integer.toString(playerOneScore));
-        playerTwoPoints.setText(Integer.toString(playerTwoScore));
+        // reset the text views
+        Multiplayer.resetText(playerTurn, playerOnePoints, playerTwoPoints);
     }
-
-
-    // update the score of the current turn player
-    private void UpdateScore(){
-        if (currentTurn == playerOne){
-            playerOneScore = playerOneScore + 10;
-            playerOnePoints.setText(Integer.toString(playerOneScore));
-        }
-        else if (currentTurn == playerTwo){
-            playerTwoScore = playerTwoScore + 10;
-            playerTwoPoints.setText(Integer.toString(playerTwoScore));
-        }
-    }
-
-
-    // picks a random button to be correct &
-    // colors all the buttons
-    private void setUpBoard(Button[] buttons){
-        // choose a random button to be "correct"
-        generateRandomButton(buttons);
-
-        // color the buttons
-        // the "correct" button will be colored slightly different
-        generateButtonColor(buttons);
-    }
-
-    // buttonClicked method : returns button that was clicked
-    private Button buttonClicked(View v, Button[] buttons){
-        for ( Button button : buttons ){
-            if ( v == button ){
-                return button;
-            }
-        }
-        return null;
-    }
-
-    // generateButtonColor colors all the buttons with a random color
-    private void generateButtonColor(Button[] buttons){
-        Random random = new Random();
-        int min = 0;
-        int max = 235;
-
-        int R = random.nextInt(max-min) + min;
-        int G = random.nextInt(max-min) + min;
-        int B = random.nextInt(max-min) + min;
-
-        int color = Color.argb(255, R, G, B);
-        int correctColor = Color.argb(255, R + 50, G + 50, B + 50);
-
-        for (Button b : buttons){
-            // set all buttons to the same color
-            b.setBackgroundColor(color);
-            // color the correct button and its text to the different color
-            if (b.getText().equals("correct")){
-                b.setBackgroundColor(correctColor);
-                b.setTextColor(correctColor);
-            }
-        }
-
-    }
-
-    // generateRandomButton marks one button as "correct"
-    private void generateRandomButton(Button[] buttons){
-        Random random = new Random();
-        int min = 1;
-        int max = 4;
-
-        int randomButton = random.nextInt(max-min) + min;
-
-        buttons[randomButton].setText("correct");
-    }
-
-    // swap player turns
-    private void swapPlayers(){
-        if (currentTurn == playerOne){
-            currentTurn = playerTwo;
-        }
-        else if (currentTurn == playerTwo){
-            currentTurn = playerOne;
-        }
-
-        playerTurn.setText(currentTurn);
-    }
-
-    // set all buttons to same color / no text
-    private void clearBoard(Button[] buttons){
-        for (Button b : buttons){
-            b.setBackgroundColor(0);
-            b.setText("");
-        }
-    }
-
-    // set up the board & swap players
-    private void nextTurn(Button[] buttons){
-        clearBoard(buttons);
-        setUpBoard(buttons);
-    }
-
-    private boolean WinDetected(){
-        if (playerOneScore == 100 || playerTwoScore == 100){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    private void DisableButtons(Button[] buttons){
-        for (Button b: buttons){
-            b.setClickable(false);
-        }
-    }
-
-    private void EnableButtons(Button[] buttons){
-        for(Button b: buttons){
-            b.setClickable(true);
-        }
-    }
-
 
 }
