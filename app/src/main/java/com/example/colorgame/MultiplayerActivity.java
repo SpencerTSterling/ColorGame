@@ -99,6 +99,7 @@ public class MultiplayerActivity extends AppCompatActivity {
             // check for winner
             if ( WinDetected() ){
                 playerTurn.setText(currentTurn + " won!");
+                DisableButtons(buttons);
             }
             else {
                 // next turn
@@ -110,6 +111,37 @@ public class MultiplayerActivity extends AppCompatActivity {
         }
 
     }
+
+    public void newGame(View view) {
+        // game buttons
+        Button[] buttons = {TopLeftBtn,TopRightBtn,
+                BottomLeftBtn,BottomRightBtn};
+
+        // enable the buttons
+        EnableButtons(buttons);
+        // clear the board
+        clearBoard(buttons);
+        // set up the board
+        setUpBoard(buttons);
+
+
+        // set current turn back to playerOne
+        if(currentTurn == playerTwo){
+            swapPlayers();
+        }
+
+        // reset the text views
+        ResetText();
+    }
+
+    private void ResetText(){
+        playerTurn.setText(currentTurn);
+        playerOneScore = 0;
+        playerTwoScore = 0;
+        playerOnePoints.setText(Integer.toString(playerOneScore));
+        playerTwoPoints.setText(Integer.toString(playerTwoScore));
+    }
+
 
     // update the score of the current turn player
     private void UpdateScore(){
@@ -216,4 +248,18 @@ public class MultiplayerActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    private void DisableButtons(Button[] buttons){
+        for (Button b: buttons){
+            b.setClickable(false);
+        }
+    }
+
+    private void EnableButtons(Button[] buttons){
+        for(Button b: buttons){
+            b.setClickable(true);
+        }
+    }
+
+
 }
