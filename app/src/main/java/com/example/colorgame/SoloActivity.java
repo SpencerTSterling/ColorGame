@@ -1,6 +1,8 @@
 package com.example.colorgame;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class SoloActivity extends AppCompatActivity {
+
+
+    // declaring x and y
+    float x1, x2, y1, y2;
+
 
     // player stats
     public TextView playerPoints;
@@ -119,4 +126,29 @@ public class SoloActivity extends AppCompatActivity {
         Solo.resetText(winDeclaration, playerPoints, playerLife);
     }
 
+    // onTouch event: swipe right to open Main Activity
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        switch(touchEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                // swipe right
+                if (x1 > x2){
+                    openMainActivity();
+                }
+                break;
+        }
+        return false;
+    }
+
+    public void openMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
 }
+
