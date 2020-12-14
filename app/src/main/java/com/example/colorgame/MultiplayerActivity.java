@@ -90,11 +90,11 @@ public class MultiplayerActivity extends AppCompatActivity {
 
             // if they clicked the right button...
             if  ( clickedButton.getText().equals("correct") ){
-                Toast.makeText(getApplicationContext(), "you clicked the right one",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "you clicked the right one",Toast.LENGTH_SHORT).show();
                 // get points to current player
                 UpdateScore();
             } else{
-                Toast.makeText(getApplicationContext(), "you clicked the wrong one",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "you clicked the wrong one",Toast.LENGTH_SHORT).show();
             }
             // check for winner
             if ( WinDetected() ){
@@ -106,7 +106,6 @@ public class MultiplayerActivity extends AppCompatActivity {
                 swapPlayers();
                 nextTurn(buttons);
             }
-
 
         }
 
@@ -241,7 +240,6 @@ public class MultiplayerActivity extends AppCompatActivity {
 
     private boolean WinDetected(){
         if (playerOneScore == 100 || playerTwoScore == 100){
-            playerTurn.setText(playerOne + "won!");
             return true;
         }
         else{
